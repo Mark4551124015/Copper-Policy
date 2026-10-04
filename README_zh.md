@@ -56,7 +56,7 @@ Copper-Policy 联合学习紧凑的世界表征与机器人策略。通过任务
 
 ## 🛠️ 安装
 
-**环境要求：** Linux x86_64、[uv](https://docs.astral.sh/uv/getting-started/installation/)、NVIDIA GPU 与 ffmpeg。`pyproject.toml` 和 `uv.lock` 固定了 Python 3.10.16、PyTorch 2.9.0 / CUDA 13.0 及依赖版本。
+**环境要求：** Linux x86_64、[uv](https://docs.astral.sh/uv/getting-started/installation/)、NVIDIA GPU 与 ffmpeg。提供的 lockfile 记录了我们验证过的环境（Python 3.10.16、PyTorch 2.9.0 / CUDA 13.0）。请根据自己的 GPU 和驱动适配 `pyproject.toml` 中的 PyTorch/CUDA 版本及软件源，并运行 `uv lock` 更新锁文件，再执行下方的 frozen 命令。
 
 ```bash
 git clone https://github.com/mark4551124015/copper-policy.git
@@ -85,7 +85,7 @@ unzip third_party/LIBERO-plus/assets.zip -d third_party/LIBERO-plus/libero/liber
 <details>
 <summary><b>RoboTwin 安装</b></summary>
 
-编译 cuRobo 需要 CUDA 13.0 toolkit 和 C++ 编译器。如果 toolkit 不在 `/usr/local/cuda`，请设置 `CUDA_HOME`；`TORCH_CUDA_ARCH_LIST` 应与你的 GPU 匹配。
+编译 cuRobo 需要 C++ 编译器，以及与所安装 PyTorch 兼容的 CUDA toolkit。请自行适配 toolkit 版本，用 `CUDA_HOME` 指定安装路径，并根据 GPU 设置 `TORCH_CUDA_ARCH_LIST`。下方的 `12.0+PTX` 是我们 RTX 5090 环境的示例，请按实际硬件修改。
 
 ```bash
 # RTX 5090；其他 GPU 请设置对应架构。
