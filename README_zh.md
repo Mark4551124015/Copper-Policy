@@ -13,6 +13,8 @@ The University of Hong Kong · The University of Sydney · Tsinghua University �
 
 [![arXiv](https://img.shields.io/badge/arXiv-2609.32779-b31b1b?logo=arxiv)](https://arxiv.org/abs/2609.32779)
 [![Project Page](https://img.shields.io/badge/Project-Page-2563eb?logo=googlechrome&logoColor=white)](https://zexinfeng-cn.github.io/works/copper-policy/)
+[![Hugging Face Model](https://img.shields.io/badge/Hugging_Face-Model-FFD21E?logo=huggingface&logoColor=black)](https://huggingface.co/Mark455/Copper-Policy)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 
 **高效训练，强大控制。**
 
@@ -49,7 +51,7 @@ Copper-Policy 联合学习紧凑的世界表征与机器人策略。通过任务
 ### TODO
 
 - [ ] **训练代码——即将发布（Training code — coming soon）**
-- [ ] 模型 checkpoint
+- [x] [模型 checkpoint](https://huggingface.co/Mark455/Copper-Policy)
 - [ ] 数据集
 
 [安装](#️-安装) · [权重](#-权重) · [评测](#-评测) · [真实机器人](#-真实机器人) · [引用](#-引用)
@@ -104,7 +106,7 @@ uv run --frozen --all-extras --no-sync bash -c \
 
 ### 预训练编码器
 
-一条命令下载三个编码器预设：
+一条命令下载两份策略权重及三个编码器预设：
 
 ```bash
 uv run --frozen --all-extras --no-sync python -m tools.download_weights all --yes
@@ -147,7 +149,15 @@ uv run --frozen --all-extras --no-sync hf download Wan-AI/Wan2.2-TI2V-5B-Diffuse
 
 ### Copper-Policy 权重
 
-**公开下载链接即将发布。** 推理权重应放在：
+从 [Hugging Face](https://huggingface.co/Mark455/Copper-Policy) 下载两份权重：
+
+```bash
+uv run --frozen --all-extras --no-sync python -m tools.download_weights policy --yes
+```
+
+使用 `policy libero --yes` 或 `policy robotwin --yes` 可只下载对应模型。`all --yes` 会下载两份策略权重及三个编码器。已有完整权重会直接复用。
+
+下载后权重位于：
 
 <div align="center">
 

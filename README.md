@@ -13,6 +13,8 @@ The University of Hong Kong · The University of Sydney · Tsinghua University �
 
 [![arXiv](https://img.shields.io/badge/arXiv-2609.32779-b31b1b?logo=arxiv)](https://arxiv.org/abs/2609.32779)
 [![Project Page](https://img.shields.io/badge/Project-Page-2563eb?logo=googlechrome&logoColor=white)](https://zexinfeng-cn.github.io/works/copper-policy/)
+[![Hugging Face Model](https://img.shields.io/badge/Hugging_Face-Model-FFD21E?logo=huggingface&logoColor=black)](https://huggingface.co/Mark455/Copper-Policy)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 
 **Cheap Training, Strong Control.**
 
@@ -49,7 +51,7 @@ Copper-Policy jointly learns a compact world representation and a robot policy. 
 ### TODO
 
 - [ ] **Training code — coming soon**
-- [ ] Model checkpoints
+- [x] [Model checkpoints](https://huggingface.co/Mark455/Copper-Policy)
 - [ ] Datasets
 
 [Installation](#-installation) · [Checkpoints](#-checkpoints) · [Evaluation](#-evaluation) · [Real Robot](#-real-robot) · [Citation](#-citation)
@@ -104,7 +106,7 @@ The setup uses SAPIEN 3.0.0b1, cuRobo v0.7.8 and RoboTwin revision `c3ddfa8b97d5
 
 ### Pretrained encoders
 
-Download all three encoder presets with one command:
+Download both policy checkpoints and all three encoder presets with one command:
 
 ```bash
 uv run --frozen --all-extras --no-sync python -m tools.download_weights all --yes
@@ -147,7 +149,15 @@ Encoder presets and cache locations are defined in `wan_va/modules/backbone_pres
 
 ### Copper-Policy weights
 
-**Public download links are coming soon.** Place the inference checkpoints at:
+Download both checkpoints from [Hugging Face](https://huggingface.co/Mark455/Copper-Policy):
+
+```bash
+uv run --frozen --all-extras --no-sync python -m tools.download_weights policy --yes
+```
+
+Use `policy libero --yes` or `policy robotwin --yes` to download one checkpoint. `all --yes` downloads both policies and all three encoders. Existing complete checkpoints are reused.
+
+The downloader places checkpoints at:
 
 <div align="center">
 
