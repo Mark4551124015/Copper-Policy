@@ -28,9 +28,13 @@ Copper-Policy 联合学习紧凑的世界表征与机器人策略。通过任务
 - **高效学习：** 2B 参数模型，在 8 张 RTX 5090 上训练耗时 9.67 小时。
 - **鲁棒操作：** 在 LIBERO、LIBERO-Plus、RoboTwin 和三个真实机器人任务上评测。
 
+<div align="center">
+
 | LIBERO | LIBERO-Plus | RoboTwin clean | RoboTwin randomized | 真实机器人 |
 | :---: | :---: | :---: | :---: | :---: |
 | **97.25%** | **80.85%** | **70.84%** | **12.98%** | **96.3%** |
+
+</div>
 
 *以上为[论文与项目页面](https://zexinfeng-cn.github.io/works/copper-policy/#main-result)报告的结果。*
 
@@ -108,11 +112,15 @@ uv run --frozen --all-extras --no-sync python -m tools.download_weights all --ye
 
 已有缓存会直接复用。下载前会显示预计空间需求和磁盘剩余空间。
 
+<div align="center">
+
 | 编码器 | 默认预设 | 来源 |
 | --- | --- | --- |
 | 世界编码器 | `vjepa2_1_vit_large_384` | [V-JEPA 2.1](https://github.com/facebookresearch/vjepa2) |
 | 视觉编码器 | `dinov2_with_registers_large` | [DINOv2](https://huggingface.co/facebook/dinov2-with-registers-large) |
 | 文本编码器与 tokenizer | `wan22_ti2v_5b` | [Wan 2.2](https://huggingface.co/Wan-AI/Wan2.2-TI2V-5B-Diffusers) |
+
+</div>
 
 <details>
 <summary><b>手动下载编码器</b></summary>
@@ -141,10 +149,14 @@ uv run --frozen --all-extras --no-sync hf download Wan-AI/Wan2.2-TI2V-5B-Diffuse
 
 **公开下载链接即将发布。** 推理权重应放在：
 
+<div align="center">
+
 | 基准 | 权重路径 |
 | --- | --- |
 | LIBERO / LIBERO-Plus | `pretrained_weights/copper_policy/libero/policy.pt` |
 | RoboTwin clean / randomized | `pretrained_weights/copper_policy/robotwin/policy.pt` |
+
+</div>
 
 LIBERO 与 LIBERO-Plus 共用一份权重。导出的权重包含策略参数、必要的模型配置及归一化统计量。推理直接加载训练后的策略，无需额外的 Wan transformer 初始化权重。
 
@@ -160,12 +172,16 @@ uv run --frozen --all-extras --no-sync bash run.sh \
 
 按 **RoboTwin clean → LIBERO → RoboTwin randomized → LIBERO-Plus** 的顺序运行，默认开启编译和视频保存。
 
+<div align="center">
+
 | 基准 | 完整任务范围 | 每任务 / 扰动实例的 episode 数 |
 | --- | --- | :---: |
 | RoboTwin clean | 50 个任务 | 50 |
 | LIBERO | 四个 suite，共 40 个任务 | 50 |
 | RoboTwin randomized | 50 个任务 | 50 |
 | LIBERO-Plus | 10,030 个扰动实例 | 1 |
+
+</div>
 
 中断后续跑同一目录：
 
@@ -189,6 +205,8 @@ uv run --frozen --all-extras --no-sync bash test_libero_plus.sh --all-tasks
 <details>
 <summary><b>评测参数与输出</b></summary>
 
+<div align="center">
+
 | 参数 | RoboTwin | LIBERO / LIBERO-Plus |
 | --- | :---: | :---: |
 | 去噪步数 | 10 | 10 |
@@ -197,13 +215,20 @@ uv run --frozen --all-extras --no-sync bash test_libero_plus.sh --all-tasks
 | 编译 | 开启 | 开启 |
 | 视频 | 保存 | 保存 |
 
-每张 GPU 常驻一套策略、T5 与 V-JEPA，跨 task 复用。LIBERO 可通过 `MAX_TASKS_PER_GPU` 配置每卡环境客户端数，策略推理 batch size 仍为 1。RoboTwin 保留 expert check，评测接受的场景。
+</div>
 
-LIBERO 使用明文 prompt 查表映射回训练指令；LIBERO-Plus 的语言扰动不进行映射，未匹配的 prompt 直接使用 benchmark 原句。
+每张 GPU 常驻一套策略、T5 与 V-JEPA，跨 task 复用。LIBERO 可通过 `MAX_TASKS_PER_GPU` 配置每卡环境客户端数，策略推理 batch size 仍为 1。RoboTwin 保留 expert check，评测接受的场景。
 
 输出包含 `summary.json`、逐任务结果、日志及标注 `succ` / `fail` 的视频。LIBERO-Plus 的总成功率按 episode 数加权；`all_tasks_completed` 表示评测是否完整完成。
 
 `--smoke` 减少 episode 数；`--dry-run` 预览命令；独立启动器可用 `--no-compile` 关闭编译。权重、episode 数和推理参数的覆盖方式见 `run.sh --help`。
+
+</details>
+
+<details>
+<summary><b>Note：LIBERO 语言映射</b></summary>
+
+LIBERO 训练数据集的语言指令与推理 benchmark 提供的指令有时存在差别，因此我们通过明文 prompt 精确查表，映射回训练指令。**LIBERO-Plus 的 language 扰动不进行映射**，保留 benchmark 原始指令；未匹配的 prompt 也直接使用原句。
 
 </details>
 
@@ -239,6 +264,8 @@ uv run --frozen --all-extras --no-sync python wan_va/wan_va_server.py \
 本项目基于 [FastWAM](https://github.com/yuantianyuan01/FastWAM) 与 [LingBot-VA](https://github.com/robbyant/lingbot-va) 的 codebase。感谢这些项目的作者，以及 V-JEPA、DINOv2、Wan、LIBERO、LIBERO-Plus 和 RoboTwin 团队的开源工作。
 
 数据集转换为 LMDB 使用了我们自己的 [lerobot-tools](https://github.com/Mark4551124015/lerobot-tools)。
+
+感谢 Codex 协助整理本次开源发布的代码。
 
 ## 📄 许可证
 

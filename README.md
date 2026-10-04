@@ -28,9 +28,13 @@ Copper-Policy jointly learns a compact world representation and a robot policy. 
 - **Efficient learning:** a 2B model trained in 9.67 hours on 8 × RTX 5090 GPUs.
 - **Robust manipulation:** evaluated on LIBERO, LIBERO-Plus, RoboTwin, and three real-robot tasks.
 
+<div align="center">
+
 | LIBERO | LIBERO-Plus | RoboTwin clean | RoboTwin randomized | Real robot |
 | :---: | :---: | :---: | :---: | :---: |
 | **97.25%** | **80.85%** | **70.84%** | **12.98%** | **96.3%** |
+
+</div>
 
 *Results reported in the [paper and project page](https://zexinfeng-cn.github.io/works/copper-policy/#main-result).*
 
@@ -108,11 +112,15 @@ uv run --frozen --all-extras --no-sync python -m tools.download_weights all --ye
 
 Existing caches are reused. The downloader reports estimated storage and available disk space before fetching missing weights.
 
+<div align="center">
+
 | Encoder | Default preset | Source |
 | --- | --- | --- |
 | World | `vjepa2_1_vit_large_384` | [V-JEPA 2.1](https://github.com/facebookresearch/vjepa2) |
 | Vision | `dinov2_with_registers_large` | [DINOv2](https://huggingface.co/facebook/dinov2-with-registers-large) |
 | Text + tokenizer | `wan22_ti2v_5b` | [Wan 2.2](https://huggingface.co/Wan-AI/Wan2.2-TI2V-5B-Diffusers) |
+
+</div>
 
 <details>
 <summary><b>Manual encoder downloads</b></summary>
@@ -141,10 +149,14 @@ Encoder presets and cache locations are defined in `wan_va/modules/backbone_pres
 
 **Public download links are coming soon.** Place the inference checkpoints at:
 
+<div align="center">
+
 | Benchmark | Checkpoint path |
 | --- | --- |
 | LIBERO / LIBERO-Plus | `pretrained_weights/copper_policy/libero/policy.pt` |
 | RoboTwin clean / randomized | `pretrained_weights/copper_policy/robotwin/policy.pt` |
+
+</div>
 
 LIBERO and LIBERO-Plus share one checkpoint. Each export contains policy parameters, the required model configuration, and normalization statistics. Inference uses the trained policy directly and needs no separate Wan transformer initialization weights.
 
@@ -160,12 +172,16 @@ uv run --frozen --all-extras --no-sync bash run.sh \
 
 Runs **RoboTwin clean → LIBERO → RoboTwin randomized → LIBERO-Plus**, with compilation and rollout videos enabled.
 
+<div align="center">
+
 | Benchmark | Full coverage | Episodes per task / instance |
 | --- | --- | :---: |
 | RoboTwin clean | 50 tasks | 50 |
 | LIBERO | 40 tasks across four suites | 50 |
 | RoboTwin randomized | 50 tasks | 50 |
 | LIBERO-Plus | 10,030 perturbed instances | 1 |
+
+</div>
 
 Resume the same run after interruption:
 
@@ -189,6 +205,8 @@ Set `EVAL_GPU_IDS=0` to use a single GPU. Set `OUT_DIR` to reuse an output direc
 <details>
 <summary><b>Evaluation settings and outputs</b></summary>
 
+<div align="center">
+
 | Setting | RoboTwin | LIBERO / LIBERO-Plus |
 | --- | :---: | :---: |
 | Denoising steps | 10 | 10 |
@@ -197,13 +215,20 @@ Set `EVAL_GPU_IDS=0` to use a single GPU. Set `OUT_DIR` to reuse an output direc
 | Compile | On | On |
 | Video | On | On |
 
-Each GPU keeps one policy, T5 and V-JEPA stack resident across tasks. LIBERO can run multiple environment clients per GPU with `MAX_TASKS_PER_GPU`; policy inference remains batch size 1. RoboTwin retains its expert check and evaluates accepted scenes.
+</div>
 
-LIBERO prompts use an exact plaintext mapping to training instructions. LIBERO-Plus language perturbations bypass this mapping; unknown prompts remain unchanged.
+Each GPU keeps one policy, T5 and V-JEPA stack resident across tasks. LIBERO can run multiple environment clients per GPU with `MAX_TASKS_PER_GPU`; policy inference remains batch size 1. RoboTwin retains its expert check and evaluates accepted scenes.
 
 Outputs include `summary.json`, task results, logs, and videos marked `succ` / `fail`. LIBERO-Plus's overall score is weighted by episodes. `all_tasks_completed` describes evaluation completion.
 
 `--smoke` reduces episode counts; `--dry-run` previews commands. Use `--no-compile` on an individual launcher for eager inference. `run.sh --help` lists checkpoint, episode-count and inference-setting overrides.
+
+</details>
+
+<details>
+<summary><b>Note: LIBERO language mapping</b></summary>
+
+Language instructions in the LIBERO training dataset can differ from those provided by the evaluation benchmarks. We use an exact plaintext mapping from benchmark prompts to training instructions. **LIBERO-Plus language perturbations are not mapped** and retain their original benchmark prompts. Unmatched prompts also remain unchanged.
 
 </details>
 
@@ -239,6 +264,8 @@ The server uses length-prefixed JSON requests. Model presets are in `inference/`
 Our implementation builds on [FastWAM](https://github.com/yuantianyuan01/FastWAM) and [LingBot-VA](https://github.com/robbyant/lingbot-va). We thank their authors and the teams behind V-JEPA, DINOv2, Wan, LIBERO, LIBERO-Plus, and RoboTwin for sharing their work.
 
 Dataset conversion to LMDB uses our [lerobot-tools](https://github.com/Mark4551124015/lerobot-tools).
+
+We also thank Codex for helping organize the code for this open-source release.
 
 ## 📄 License
 
