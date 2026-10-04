@@ -258,14 +258,11 @@ The server uses length-prefixed JSON requests. Model presets are in `inference/`
 ## 📚 Citation
 
 ```bibtex
-@misc{feng2026copperpolicyfocusrepresentationrobust,
+@article{feng2026copper,
   title={Copper-Policy: Focus on the Representation for Robust Robot Manipulation},
-  author={Zexin Feng and Yixu Feng and Lingyu Xiao and Shang Su and Kexin Zheng and Chang Xu and Mengkai Shi and Shuo Feng and Xintao Yan},
-  year={2026},
-  eprint={2609.32779},
-  archivePrefix={arXiv},
-  primaryClass={cs.RO},
-  url={https://arxiv.org/abs/2609.32779}
+  author={Feng, Zexin and Feng, Yixu and Xiao, Lingyu and Su, Shang and Zheng, Kexin and Xu, Chang and Shi, Mengkai and Feng, Shuo and Yan, Xintao},
+  journal={arXiv preprint arXiv:2609.32779},
+  year={2026}
 }
 ```
 
