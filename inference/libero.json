@@ -1,0 +1,70 @@
+{
+  "action_per_frame": 2,
+  "future_blocks": 16,
+  "teacher_compression_frames": 2,
+  "full_horizon_teacher_coverage": true,
+  "future_pool_size": 2,
+  "future_semantic_steps": null,
+  "action_frame_ratio": null,
+  "robotwin_action_space": "eef",
+  "robotwin_action_type": "ee",
+  "obs_cam_keys": [
+    "observation.images.image",
+    "observation.images.wrist_image"
+  ],
+  "action_dim": 7,
+  "norm_stat": {
+    "mean": [
+      0.0618831284549259,
+      0.08701013409377131,
+      -0.09098753582797833,
+      0.0005711871427809853,
+      0.005523421982727656,
+      -0.005017155657792082,
+      0.5262555238677551
+    ],
+    "std": [
+      0.3350334558118185,
+      0.37854472324553656,
+      0.44376765641279264,
+      0.03920756640316548,
+      0.06304128440900078,
+      0.07838785125536757,
+      0.49931017214295237
+    ]
+  },
+  "text_emb_max_tokens": 64,
+  "per_view_image_size": [
+    224,
+    224
+  ],
+  "per_view_image_sizes": [
+    [
+      224,
+      224
+    ],
+    [
+      224,
+      224
+    ]
+  ],
+  "proprio_dim": 8,
+  "proprio_norm_mode": "min/max",
+  "view_rope_layout": "horizontal",
+  "compact_view_rope_layout": "horizontal",
+  "compact_view_global_tokens": [
+    0,
+    0
+  ],
+  "compact_spatial_view_indices": [
+    0,
+    1
+  ],
+  "grid_sampler_num_tokens": 16,
+  "grid_sampler_global_canvas": false,
+  "grid_sampler_share_coord_head": true,
+  "legacy_batched_view_dino_encoder": true,
+  "eval_vjepa_anchor_temporal_mode": "prev_or_self",
+  "eval_vjepa_anchor_prev_offset": 1,
+  "num_views": 2
+}

@@ -1,0 +1,56 @@
+{
+  "action_per_frame": 8,
+  "future_blocks": 4,
+  "teacher_compression_frames": 1,
+  "full_horizon_teacher_coverage": false,
+  "future_pool_size": 1,
+  "future_semantic_steps": 4,
+  "action_frame_ratio": 4.0,
+  "robotwin_action_space": "joint",
+  "robotwin_action_type": "qpos",
+  "robotwin_current_view_resize_mode": "direct",
+  "obs_cam_keys": [
+    "observation.images.cam_high",
+    "observation.images.cam_left_wrist",
+    "observation.images.cam_right_wrist"
+  ],
+  "action_dim": 14,
+  "norm_stat": {},
+  "text_emb_max_tokens": 128,
+  "per_view_image_size": [
+    256,
+    320
+  ],
+  "per_view_image_sizes": [
+    [
+      256,
+      320
+    ],
+    [
+      128,
+      160
+    ],
+    [
+      128,
+      160
+    ]
+  ],
+  "proprio_dim": 14,
+  "video_context_uses_proprio": false,
+  "proprio_norm_mode": "z-score",
+  "view_rope_layout": "robotwin_tshape",
+  "compact_view_rope_layout": "robotwin_tshape",
+  "compact_view_global_tokens": [
+    0,
+    0,
+    0
+  ],
+  "compact_spatial_view_indices": [
+    0,
+    1,
+    2
+  ],
+  "grid_sampler_num_tokens": 32,
+  "grid_sampler_global_canvas": true,
+  "num_views": 3
+}
