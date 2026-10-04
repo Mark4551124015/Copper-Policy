@@ -268,7 +268,7 @@ uv run --frozen --all-extras --no-sync python wan_va/wan_va_server.py \
 
 ## 🙏 致谢
 
-本项目基于 [FastWAM](https://github.com/yuantianyuan01/FastWAM) 与 [LingBot-VA](https://github.com/robbyant/lingbot-va) 的 codebase。感谢这些项目的作者，以及 V-JEPA、DINOv2、Wan、LIBERO、LIBERO-Plus 和 RoboTwin 团队的开源工作。
+本项目基于 [FastWAM](https://github.com/yuantianyuan01/FastWAM) 与 [LingBot-VA](https://github.com/robbyant/lingbot-va) 的 codebase。感谢这些项目的作者，以及 [V-JEPA](https://github.com/facebookresearch/vjepa2)、[DINOv2](https://github.com/facebookresearch/dinov2)、[Wan](https://github.com/Wan-Video/Wan2.2)、[LIBERO](https://github.com/Lifelong-Robot-Learning/LIBERO)、[LIBERO-Plus](https://github.com/sylvestf/LIBERO-plus) 和 [RoboTwin](https://github.com/RoboTwin-Platform/RoboTwin) 团队的开源工作。
 
 数据集转换为 LMDB 使用了我们自己的 [lerobot-tools](https://github.com/Mark4551124015/lerobot-tools)。
 

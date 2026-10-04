@@ -268,7 +268,7 @@ The server uses length-prefixed JSON requests. Model presets are in `inference/`
 
 ## 🙏 Acknowledgements
 
-Our implementation builds on [FastWAM](https://github.com/yuantianyuan01/FastWAM) and [LingBot-VA](https://github.com/robbyant/lingbot-va). We thank their authors and the teams behind V-JEPA, DINOv2, Wan, LIBERO, LIBERO-Plus, and RoboTwin for sharing their work.
+Our implementation builds on [FastWAM](https://github.com/yuantianyuan01/FastWAM) and [LingBot-VA](https://github.com/robbyant/lingbot-va). We thank their authors and the teams behind [V-JEPA](https://github.com/facebookresearch/vjepa2), [DINOv2](https://github.com/facebookresearch/dinov2), [Wan](https://github.com/Wan-Video/Wan2.2), [LIBERO](https://github.com/Lifelong-Robot-Learning/LIBERO), [LIBERO-Plus](https://github.com/sylvestf/LIBERO-plus), and [RoboTwin](https://github.com/RoboTwin-Platform/RoboTwin) for sharing their work.
 
 Dataset conversion to LMDB uses our [lerobot-tools](https://github.com/Mark4551124015/lerobot-tools).
 
