@@ -3,10 +3,8 @@
 set -euo pipefail
 ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 cd "$ROOT"
-unset UV_PROJECT_ENVIRONMENT PYTHONPATH PYTHONHOME
-export UV_CACHE_DIR="${UV_CACHE_DIR:-$ROOT/.uv-cache}"
-uv sync --frozen --extra libero --inexact
-PYTHON="$ROOT/.venv/bin/python"
+source "$ROOT/tools/uv_env.sh"
+copper_use_env libero
 if [[ " $* " != *" --dry-run "* ]]; then
   "$PYTHON" -m third_party.setup_sources libero
   "$PYTHON" -m evaluation.run libero --check

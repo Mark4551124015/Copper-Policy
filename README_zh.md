@@ -63,16 +63,25 @@ Copper-Policy 联合学习紧凑的世界表征与机器人策略。通过任务
 ```bash
 git clone https://github.com/mark4551124015/copper-policy.git
 cd copper-policy
-uv sync --frozen --all-extras --inexact
+bash tools/setup_envs.sh
 uv run --frozen --all-extras --no-sync python -m third_party.setup_sources all
 ```
+
+使用两个独立 uv 环境隔离模拟器依赖：
+
+| 测评 | 环境 | 锁文件 | NumPy / Pillow |
+| --- | --- | --- | --- |
+| LIBERO / LIBERO-Plus | `.venv-libero` | `envs/libero/uv.lock` | 2.2.6 / 12.1.1 |
+| RoboTwin / 真实机器人 | `.venv` | `uv.lock` | 1.26.4 / 11.3.0 |
+
+测评启动器自动选择环境，无需激活 conda。两类模拟器各自锁定依赖版本。适配 PyTorch/CUDA 时，请修改两份 `pyproject.toml`，分别运行 `uv lock` 和 `uv lock --project envs/libero` 更新锁文件。
 
 评测前请安装下面的模拟器资产。启动器会分别选择 LIBERO 和 LIBERO-Plus 源码，两个目录可以同时放在 `third_party/` 下。
 
 <details>
 <summary><b>LIBERO 与 LIBERO-Plus 安装</b></summary>
 
-锁定的 `libero` extra 已包含 Python 依赖；上面的命令会下载源码。系统环境要求请参考 [LIBERO](https://github.com/Lifelong-Robot-Learning/LIBERO) 与 [LIBERO-Plus](https://github.com/sylvestf/LIBERO-plus) 安装指南。
+独立锁定的 `envs/libero` 项目已包含 Python 依赖；上面的命令会下载源码。系统环境要求请参考 [LIBERO](https://github.com/Lifelong-Robot-Learning/LIBERO) 与 [LIBERO-Plus](https://github.com/sylvestf/LIBERO-plus) 安装指南。
 
 LIBERO-Plus 还需要 ImageMagick 共享库（Ubuntu：`sudo apt-get install libmagickwand-dev`）及额外资产：
 

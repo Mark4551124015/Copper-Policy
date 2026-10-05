@@ -57,16 +57,8 @@ if [[ ! "$GPU_IDS" =~ ^[0-9]+(,[0-9]+)*$ ]]; then
   echo "GPU indices must be comma-separated numbers" >&2; exit 2
 fi
 command -v uv >/dev/null || { echo 'Install uv first: https://docs.astral.sh/uv/' >&2; exit 1; }
-# Always use this project's uv environment, even when called from conda or
-# another active virtual environment. Keep the separately built cuRobo wheel.
-unset UV_PROJECT_ENVIRONMENT PYTHONPATH PYTHONHOME
-export UV_CACHE_DIR="${UV_CACHE_DIR:-$ROOT/.uv-cache}"
-if [[ "$BACKEND" == robotwin ]]; then
-  uv sync --frozen --extra robotwin --inexact
-else
-  uv sync --frozen --extra libero --inexact
-fi
-PYTHON="$ROOT/.venv/bin/python"
+source "$ROOT/tools/uv_env.sh"
+copper_use_env "$BACKEND"
 POLICY_BACKEND="$BACKEND"
 [[ "$BACKEND" == libero-plus ]] && POLICY_BACKEND=libero
 CKPT="${CKPT:-pretrained_weights/copper_policy/$POLICY_BACKEND/policy.pt}"

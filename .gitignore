@@ -16,9 +16,11 @@
 !/inference/
 !/third_party/
 !/tools/
+!/envs/
 !/wan_va/
 
 .venv/
+.venv-libero/
 .uv-cache/
 __pycache__/
 *.py[cod]

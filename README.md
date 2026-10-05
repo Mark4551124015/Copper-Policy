@@ -63,16 +63,25 @@ Copper-Policy jointly learns a compact world representation and a robot policy. 
 ```bash
 git clone https://github.com/mark4551124015/copper-policy.git
 cd copper-policy
-uv sync --frozen --all-extras --inexact
+bash tools/setup_envs.sh
 uv run --frozen --all-extras --no-sync python -m third_party.setup_sources all
 ```
+
+Two independent uv environments keep simulator dependencies isolated:
+
+| Evaluation | Environment | Lockfile | NumPy / Pillow |
+| --- | --- | --- | --- |
+| LIBERO / LIBERO-Plus | `.venv-libero` | `envs/libero/uv.lock` | 2.2.6 / 12.1.1 |
+| RoboTwin / real robot | `.venv` | `uv.lock` | 1.26.4 / 11.3.0 |
+
+Evaluation launchers select the environment automatically; no conda activation is needed. Each simulator family has its own pinned dependency versions. If adapting PyTorch/CUDA, update both `pyproject.toml` files and regenerate each lockfile (`uv lock` and `uv lock --project envs/libero`).
 
 Install the simulator assets below before evaluation. The launchers select LIBERO and LIBERO-Plus independently, so both source trees can coexist in `third_party/`.
 
 <details>
 <summary><b>LIBERO & LIBERO-Plus setup</b></summary>
 
-The locked `libero` extra contains their Python dependencies. Sources are fetched by the command above; see the upstream [LIBERO](https://github.com/Lifelong-Robot-Learning/LIBERO) and [LIBERO-Plus](https://github.com/sylvestf/LIBERO-plus) installation guides for system requirements.
+The separately locked `envs/libero` project contains their Python dependencies. Sources are fetched by the command above; see the upstream [LIBERO](https://github.com/Lifelong-Robot-Learning/LIBERO) and [LIBERO-Plus](https://github.com/sylvestf/LIBERO-plus) installation guides for system requirements.
 
 For LIBERO-Plus, install ImageMagick's shared library (Ubuntu: `sudo apt-get install libmagickwand-dev`) and download the additional assets:
 

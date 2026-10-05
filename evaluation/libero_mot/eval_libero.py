@@ -419,8 +419,6 @@ def encode_text(
     max_length: int | None = DEFAULT_TEXT_EMB_MAX_TOKENS,
 ) -> tuple[torch.Tensor, torch.Tensor]:
     """Returns embeddings and a real-token mask with zero-padding past real tokens.
-
-    Resize observations to the checkpoint input geometry.
     """
     text = _prompt_clean(text)
     if max_length is None:

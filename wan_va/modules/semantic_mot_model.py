@@ -727,6 +727,19 @@ class SemanticFastWAM(nn.Module):
 
 
 
+    def _apply(self, fn, recurse: bool = True):
+        # Normalization statistics were plain FP32 tensors / a Python scalar in
+        # the original model. Keep their values when model.to(bfloat16) moves
+        # the learned weights: casting back to FP32 after rounding is lossy.
+        names = ("_dino_spatial_mean", "_dino_spatial_scale")
+        originals = {name: self._buffers.get(name) for name in names}
+        result = super()._apply(fn, recurse=recurse)
+        for name, original in originals.items():
+            converted = self._buffers.get(name)
+            if original is not None and converted is not None:
+                self._buffers[name] = original.to(device=converted.device, dtype=torch.float32)
+        return result
+
     @staticmethod
     def _runtime_compute_dtype(device: torch.device, fallback: torch.dtype) -> torch.dtype:
         if device.type == "cuda" and torch.is_autocast_enabled():
@@ -911,6 +924,7 @@ class SemanticFastWAM(nn.Module):
             "video_time_mlp",
             "action_time_mlp",
             "_dino_spatial_mean",
+            "_dino_spatial_scale",
         ]
         for expert_name in self.mot.expert_order:
             for layer_idx in range(self.mot.num_layers):

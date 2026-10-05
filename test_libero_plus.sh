@@ -3,12 +3,12 @@
 set -euo pipefail
 ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 cd "$ROOT"
-unset UV_PROJECT_ENVIRONMENT PYTHONPATH PYTHONHOME
-export UV_CACHE_DIR="${UV_CACHE_DIR:-$ROOT/.uv-cache}"
-uv sync --frozen --extra libero --inexact
-PYTHON="$ROOT/.venv/bin/python"
-"$PYTHON" -m third_party.setup_sources libero-plus
-"$PYTHON" -m evaluation.run libero-plus --check
+source "$ROOT/tools/uv_env.sh"
+copper_use_env libero
+if [[ " $* " != *" --dry-run "* ]]; then
+  "$PYTHON" -m third_party.setup_sources libero-plus
+  "$PYTHON" -m evaluation.run libero-plus --check
+fi
 exec "$PYTHON" -m evaluation.libero_mot.eval_tasks \
   --backend libero-plus --sample-size "${PLUS_SAMPLE_SIZE:-500}" \
   --ckpt "${CKPT:-pretrained_weights/copper_policy/libero/policy.pt}" \
