@@ -58,6 +58,21 @@ Copper-Policy 联合学习紧凑的世界表征与机器人策略。通过任务
 
 ## 🛠️ 安装
 
+### Agent 复现指引
+
+请先阅读 [AGENTS.md](AGENTS.md) 和英文[全新复现指南](agent_docs/REPRODUCING.md)，
+按步骤完成独立环境搭建、源码与权重下载、兼容修复、真实策略单回合验证及全量评测。
+辅助脚本位于 `tools/`；本地实验记录和环境清单不加入 Git。
+单回合验证结果不代表论文的全量评测成功率。
+
+完成安装后，使用以下命令启动或续跑参考配置的 8 卡全量评测：
+
+```bash
+bash tools/fresh_run.sh -u tools/run_fresh_full.py
+```
+
+启动脚本自动清除代理并使用新建的 `.venv`。其他 GPU 配置、日志查看和结果检查方法见复现指南。
+
 **环境要求：** Linux x86_64、[uv](https://docs.astral.sh/uv/getting-started/installation/)、NVIDIA GPU 与 ffmpeg。提供的 lockfile 记录了我们验证过的环境（Python 3.10.16、PyTorch 2.9.0 / CUDA 13.0）。请根据自己的 GPU 和驱动适配 `pyproject.toml` 中的 PyTorch/CUDA 版本及软件源，并运行 `uv lock` 更新锁文件，再执行下方的 frozen 命令。
 
 ```bash

@@ -58,6 +58,24 @@ Copper-Policy jointly learns a compact world representation and a robot policy. 
 
 ## 🛠️ Installation
 
+### Reproduction by coding agents
+
+Coding agents should read [AGENTS.md](AGENTS.md) and follow the step-by-step
+[fresh reproduction guide](agent_docs/REPRODUCING.md). It covers isolated
+downloads, simulator assets, compatibility fixes, actual policy smoke checks
+and full evaluation with resuming. Portable helpers live in `tools/`;
+local experiment records and environment manifests are excluded from Git.
+The guide distinguishes smoke outcomes from full paper results.
+
+After completing setup, start or resume the reference eight-GPU evaluation:
+
+```bash
+bash tools/fresh_run.sh -u tools/run_fresh_full.py
+```
+
+The wrapper uses the new `.venv` and clears proxies automatically. The guide
+also explains other GPU configurations and how to inspect logs and results.
+
 **Requirements:** Linux x86_64, [uv](https://docs.astral.sh/uv/getting-started/installation/), an NVIDIA GPU, and ffmpeg. The provided lockfile records our tested environment (Python 3.10.16, PyTorch 2.9.0 / CUDA 13.0). Adapt the PyTorch/CUDA versions and package index in `pyproject.toml` to your GPU and driver, then regenerate `uv.lock` with `uv lock` before using the frozen commands below.
 
 ```bash
