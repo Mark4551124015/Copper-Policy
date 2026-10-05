@@ -87,7 +87,7 @@ uv run --frozen --all-extras --no-sync python -m third_party.setup_sources all
 
 | 测评 | 环境 | 锁文件 | NumPy / Pillow |
 | --- | --- | --- | --- |
-| LIBERO / LIBERO-Plus | `.venv-libero` | `envs/libero/uv.lock` | 2.2.6 / 12.1.1 |
+| LIBERO / LIBERO-Plus | `.venv-libero` | `envs/libero/uv.lock` | 1.26.4 / 12.1.1 |
 | RoboTwin / 真实机器人 | `.venv` | `uv.lock` | 1.26.4 / 11.3.0 |
 
 测评启动器自动选择环境，无需激活 conda。两类模拟器各自锁定依赖版本。适配 PyTorch/CUDA 时，请修改两份 `pyproject.toml`，分别运行 `uv lock` 和 `uv lock --project envs/libero` 更新锁文件。

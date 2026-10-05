@@ -91,7 +91,7 @@ Two independent uv environments keep simulator dependencies isolated:
 
 | Evaluation | Environment | Lockfile | NumPy / Pillow |
 | --- | --- | --- | --- |
-| LIBERO / LIBERO-Plus | `.venv-libero` | `envs/libero/uv.lock` | 2.2.6 / 12.1.1 |
+| LIBERO / LIBERO-Plus | `.venv-libero` | `envs/libero/uv.lock` | 1.26.4 / 12.1.1 |
 | RoboTwin / real robot | `.venv` | `uv.lock` | 1.26.4 / 11.3.0 |
 
 Evaluation launchers select the environment automatically; no conda activation is needed. Each simulator family has its own pinned dependency versions. If adapting PyTorch/CUDA, update both `pyproject.toml` files and regenerate each lockfile (`uv lock` and `uv lock --project envs/libero`).
