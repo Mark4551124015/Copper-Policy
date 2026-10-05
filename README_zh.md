@@ -71,7 +71,8 @@ Copper-Policy 联合学习紧凑的世界表征与机器人策略。通过任务
 bash tools/fresh_run.sh -u tools/run_fresh_full.py
 ```
 
-启动脚本自动清除代理并使用新建的 `.venv`。其他 GPU 配置、日志查看和结果检查方法见复现指南。
+启动脚本自动清除代理；评测入口为 LIBERO／LIBERO-Plus 选择 `.venv-libero`，为 RoboTwin 选择 `.venv`。
+全量启动器支持 `--out-dir`、`--gpu-ids` 和 `--order`；`fresh_full_v2` 示例、日志查看和结果检查方法见复现指南。
 
 **环境要求：** Linux x86_64、[uv](https://docs.astral.sh/uv/getting-started/installation/)、NVIDIA GPU 与 ffmpeg。提供的 lockfile 记录了我们验证过的环境（Python 3.10.16、PyTorch 2.9.0 / CUDA 13.0）。请根据自己的 GPU 和驱动适配 `pyproject.toml` 中的 PyTorch/CUDA 版本及软件源，并运行 `uv lock` 更新锁文件，再执行下方的 frozen 命令。
 

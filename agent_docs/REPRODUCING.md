@@ -62,13 +62,17 @@ export CUDA_HOME=/usr/local/cuda-13.0
 export TORCH_CUDA_ARCH_LIST='12.0+PTX'
 export MAX_JOBS=4
 
-uv sync --frozen --all-extras --inexact --no-cache \
-  --link-mode copy --python-preference only-managed
+export UV_PYTHON_PREFERENCE=only-managed
+bash tools/setup_envs.sh
 ```
 
 Use `bash tools/fresh_run.sh ...` for subsequent Python commands. It changes
 to the project root, clears proxies and inherited Python paths, and uses the new
-`.venv` with isolated caches. CUDA and architecture accept environment overrides.
+`.venv` with isolated caches. The updated project has two locked environments:
+RoboTwin uses `.venv`, while LIBERO / LIBERO-Plus use `.venv-libero` from
+`envs/libero/uv.lock`. Select the latter with `bash tools/fresh_run.sh --env libero`.
+The benchmark launchers select the proper environment automatically.
+CUDA and architecture accept environment overrides.
 When these helpers are absent from the upstream version you cloned, use
 `.venv/bin/python` with the exports above; the helper files need to be distributed
 with the repository revision used by the next agent.
@@ -169,8 +173,8 @@ First check sources, assets, imports and CUDA execution:
 
 ```bash
 bash tools/fresh_run.sh -m third_party.setup_sources all --check
-bash tools/fresh_run.sh -m evaluation.run libero --check
-bash tools/fresh_run.sh -m evaluation.run libero-plus --check
+bash tools/fresh_run.sh --env libero -m evaluation.run libero --check
+bash tools/fresh_run.sh --env libero -m evaluation.run libero-plus --check
 bash tools/fresh_run.sh -m evaluation.run robotwin --check
 bash tools/fresh_run.sh -c 'import torch; import curobo.curobolib.geom_cu; import sapien; from wand.image import Image; x=torch.randn(64,64,device="cuda"); y=x@x; torch.cuda.synchronize(); print(torch.__version__, torch.version.cuda, torch.cuda.device_count(), y.shape)'
 ```
@@ -182,12 +186,12 @@ disabled. Do not duplicate a user-managed workload.
 ```bash
 bash tools/fresh_run.sh -c 'from pathlib import Path; import json; p=Path("outputs/fresh_smoke/one_libero_task.json"); p.parent.mkdir(parents=True, exist_ok=True); p.write_text(json.dumps([["libero_spatial",0]]))'
 
-bash tools/fresh_run.sh -m evaluation.libero_mot.eval_tasks \
+bash tools/fresh_run.sh --env libero -m evaluation.libero_mot.eval_tasks \
   --ckpt pretrained_weights/copper_policy/libero/policy.pt \
   --out-dir outputs/fresh_smoke/libero_policy --gpu-ids 0 \
   --task-manifest outputs/fresh_smoke/one_libero_task.json --smoke --no-compile
 
-bash tools/fresh_run.sh -m evaluation.libero_mot.eval_tasks --backend libero-plus \
+bash tools/fresh_run.sh --env libero -m evaluation.libero_mot.eval_tasks --backend libero-plus \
   --ckpt pretrained_weights/copper_policy/libero/policy.pt \
   --out-dir outputs/fresh_smoke/libero_plus_policy --gpu-ids 0 \
   --task-manifest outputs/fresh_smoke/one_libero_task.json --smoke --no-compile
@@ -227,7 +231,16 @@ bash tools/fresh_run.sh -u tools/run_fresh_full.py
 This calls upstream `run.sh` with compilation and videos enabled, in this order:
 RoboTwin clean (50×50), LIBERO (40×50), RoboTwin randomized (50×50) and LIBERO-Plus
 (10,030×1). Expect hours of execution. Change the GPU list and output path in
-`tools/run_fresh_full.py` when the user requests another configuration.
+the command with `--gpu-ids` and `--out-dir` when the user requests another configuration.
+Use `--order` to select a permutation of all four benchmarks. For example:
+
+```bash
+bash tools/fresh_run.sh -u tools/run_fresh_full.py \
+  --out-dir outputs/evaluation/fresh_full_v2 \
+  --order libero,libero_plus,robotwin_clean,robotwin_rand
+```
+
+Add `--dry-run` to preview without creating an output directory or loading models.
 Alternatively, with the step-2 exports active, run
 `bash run.sh --gpu-ids 0 --out-dir outputs/evaluation/my_run --resume` for one GPU.
 

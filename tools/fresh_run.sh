@@ -14,4 +14,13 @@ export UV_NO_CACHE=1
 export PYTHONNOUSERSITE=1
 export CUDA_HOME="${CUDA_HOME:-/usr/local/cuda-13.0}"
 export TORCH_CUDA_ARCH_LIST="${TORCH_CUDA_ARCH_LIST:-12.0+PTX}"
-exec "$PWD/.venv/bin/python" "$@"
+PYTHON="$PWD/.venv/bin/python"
+if [[ "${1:-}" == --env ]]; then
+  case "${2:-}" in
+    libero|libero-plus) PYTHON="$PWD/.venv-libero/bin/python" ;;
+    robotwin) ;;
+    *) echo 'Usage: fresh_run.sh [--env libero|libero-plus|robotwin] <Python arguments>' >&2; exit 2 ;;
+  esac
+  shift 2
+fi
+exec "$PYTHON" "$@"

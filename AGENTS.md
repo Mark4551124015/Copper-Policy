@@ -33,7 +33,9 @@ project is not authorization to start that long-running workload.
   models and assets into a new directory. Do not reuse another local checkout,
   conda environment, model or cache. Do not use `ln -s` or `--link-local`.
   System drivers, CUDA, compilers, uv and ffmpeg remain system prerequisites.
-- Use `.venv` and repository-local managed Python. `tools/fresh_run.sh` clears proxies
+- Use `.venv` for RoboTwin and `.venv-libero` for LIBERO / LIBERO-Plus, both with
+  repository-local managed Python. `tools/fresh_run.sh --env libero` selects
+  the LIBERO interpreter; the default selects RoboTwin. The wrapper clears proxies
   and inherited Python paths, disables user site packages and isolates caches.
   Keep `--inexact` on uv sync to retain separately built cuRobo; use copy mode.
 - Never edit or kill unrelated jobs. Identify this run's process tree before

@@ -9,6 +9,7 @@ usage() {
 Usage: bash run.sh [options]
   --out-dir PATH       Batch output directory (default: outputs/release_validation/<timestamp>)
   --gpu-ids LIST       Physical GPU indices (default: 0,1,2,3,4,5,6,7)
+  --order LIST         Comma-separated permutation of libero,libero_plus,robotwin_clean,robotwin_rand
   --resume             Skip completed evaluations in --out-dir; retry incomplete ones
   --smoke              One episode per task, retaining the complete task sets
   --dry-run            Preview launcher commands without starting evaluations
@@ -31,11 +32,16 @@ RESUME=0
 DRY_RUN=0
 SMOKE=0
 OPTIONS=(--all-tasks)
+ORDER=robotwin_clean,libero,robotwin_rand,libero_plus
 while (($#)); do
   case "$1" in
-    --out-dir|--gpu-ids)
+    --out-dir|--gpu-ids|--order)
       (($# >= 2)) && [[ -n "$2" ]] || { echo "Missing value for $1" >&2; exit 2; }
-      if [[ "$1" == --out-dir ]]; then BATCH_DIR="$2"; else GPU_IDS="$2"; fi
+      case "$1" in
+        --out-dir) BATCH_DIR="$2" ;;
+        --gpu-ids) GPU_IDS="$2" ;;
+        --order) ORDER="$2" ;;
+      esac
       shift 2 ;;
     --resume) RESUME=1; shift ;;
     --include-clean) shift ;; # Compatibility: clean is always included.
@@ -48,7 +54,15 @@ done
 [[ "$GPU_IDS" =~ ^[0-9]+(,[0-9]+)*$ ]] || { echo 'Invalid --gpu-ids' >&2; exit 2; }
 export EVAL_GPU_IDS="$GPU_IDS"
 export UV_CACHE_DIR="${UV_CACHE_DIR:-$ROOT/.uv-cache}"
-NAMES=(robotwin_clean libero robotwin_rand libero_plus)
+IFS=',' read -r -a NAMES <<< "$ORDER"
+[[ "$ORDER" != *, && ${#NAMES[@]} == 4 ]] || { echo '--order must include all four benchmarks exactly once.' >&2; exit 2; }
+for expected in libero libero_plus robotwin_clean robotwin_rand; do
+  occurrences=0
+  for name in "${NAMES[@]}"; do
+    if [[ "$name" == "$expected" ]]; then occurrences=$((occurrences + 1)); fi
+  done
+  ((occurrences == 1)) || { echo '--order must include all four benchmarks exactly once.' >&2; exit 2; }
+done
 ROBOTWIN_EPISODES="${ROBOTWIN_EPISODES:-50}"
 LIBERO_TRIALS="${LIBERO_TRIALS:-50}"
 PLUS_TRIALS="${PLUS_TRIALS:-1}"
@@ -175,7 +189,7 @@ for name in "${NAMES[@]}"; do
   if ((CODE != 0)); then
     record "$name" failed "$CODE" "$CURRENT"
     echo "[$name] FAILED (exit $CODE). Log: $CURRENT/launcher.log" >&2
-    printf 'Retry batch: bash run.sh --resume --out-dir %q --gpu-ids %q' "$BATCH_DIR" "$GPU_IDS" >&2
+    printf 'Retry batch: bash run.sh --resume --out-dir %q --gpu-ids %q --order %q' "$BATCH_DIR" "$GPU_IDS" "$ORDER" >&2
     ((SMOKE)) && printf ' --smoke' >&2
     printf '\n' >&2
     exit "$CODE"
