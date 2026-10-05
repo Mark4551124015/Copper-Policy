@@ -4,6 +4,8 @@
 !/LICENSE
 !/README.md
 !/README_zh.md
+!/AGENTS.md
+!/agent_docs/
 !/assets/
 !/pyproject.toml
 !/uv.lock
@@ -20,6 +22,15 @@
 
 .venv/
 .uv-cache/
+.fresh-cache/
+.fresh-python/
+third_party/LIBERO/
+third_party/LIBERO-plus/
+third_party/RoboTwin/
+third_party/curobo/
+third_party/.libero_config/
+agent_docs/FRESH_REPRODUCTION.md
+agent_docs/fresh_environment.json
 __pycache__/
 *.py[cod]
 .pytest_cache/
